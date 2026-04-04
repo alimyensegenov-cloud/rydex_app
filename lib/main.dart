@@ -120,8 +120,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-<<<<<<< HEAD
-//шо ты лысый плаки плаки?
-=======
-//mellstroy123456
->>>>>>> cc57aa94da7c0d6dd93d3a7b470b1009d746da2c
+//mellstroy12345677
