@@ -10,220 +10,46 @@ class RydexApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Rydex',
+      title: 'Rydex Passenger',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: const LanguageScreen(),
     );
   }
 }
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final phoneController = TextEditingController();
-  final passwordController = TextEditingController();
-  bool isPassenger = true;
+class LanguageScreen extends StatelessWidget {
+  const LanguageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 80),
-              const Text(
-                'RYDEX',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              const SizedBox(height: 40),
-              
-              // Role selection
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() => isPassenger = true);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: isPassenger ? Colors.blue : Colors.grey,
-                    ),
-                    child: const Text('Пассажир'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() => isPassenger = false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: !isPassenger ? Colors.blue : Colors.grey,
-                    ),
-                    child: const Text('Водитель'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
-              
-              // Phone field
-              TextField(
-                controller: phoneController,
-                decoration: InputDecoration(
-                  hintText: '+7 (XXX) XXX-XX-XX',
-                  labelText: 'Номер телефона',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              
-              // Password field
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Пароль',
-                  labelText: 'Пароль',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              
-              // Login button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (phoneController.text.isEmpty ||
-                        passwordController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Заполните все поля')),
-                      );
-                      return;
-                    }
-                    
-                    // Navigate to home
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomeScreen(
-                          isPassenger: isPassenger,
-                          phone: phoneController.text,
-                        ),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                  ),
-                  child: const Text(
-                    'Войти',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              
-              // Sign up
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Нет аккаунта? '),
-                  GestureDetector(
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Регистрация в разработке')),
-                      );
-                    },
-                    child: const Text(
-                      'Зарегистрируйся',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    phoneController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-}
-
-class HomeScreen extends StatefulWidget {
-  final bool isPassenger;
-  final String phone;
-
-  const HomeScreen({
-    super.key,
-    required this.isPassenger,
-    required this.phone,
-  });
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.isPassenger ? 'Поиск поездки' : 'Доступные заказы'),
-        backgroundColor: Colors.blue,
-      ),
-      body: widget.isPassenger ? PassengerHome() : DriverHome(),
-      drawer: Drawer(
-        child: ListView(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.blue),
-              child: Text(
-                widget.phone,
-                style: const TextStyle(color: Colors.white, fontSize: 18),
-              ),
+            const Text('RYDEX', style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.blue)),
+            const SizedBox(height: 60),
+            const Text('Choose Language / Выберите язык / Dil seçin', textAlign: TextAlign.center),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HomeScreen(lang: 'en'))),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
+              child: const Text('🇬🇧 English', style: TextStyle(fontSize: 16, color: Colors.white)),
             ),
-            ListTile(
-              title: const Text('Профиль'),
-              onTap: () {},
+            const SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HomeScreen(lang: 'ru'))),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
+              child: const Text('🇷🇺 Русский', style: TextStyle(fontSize: 16, color: Colors.white)),
             ),
-            ListTile(
-              title: const Text('История'),
-              onTap: () {},
-            ),
-            ListTile(
-              title: const Text('Выход'),
-              onTap: () {
-                Navigator.pop(context);
-              },
+            const SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HomeScreen(lang: 'tr'))),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
+              child: const Text('🇹🇷 Türkçe', style: TextStyle(fontSize: 16, color: Colors.white)),
             ),
           ],
         ),
@@ -232,183 +58,70 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class PassengerHome extends StatelessWidget {
-  const PassengerHome({super.key});
+class HomeScreen extends StatefulWidget {
+  final String lang;
+  const HomeScreen({super.key, required this.lang});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        children: [
-          // From/To fields
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'Откуда?',
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-              prefixIcon: const Icon(Icons.location_on),
-            ),
-          ),
-          const SizedBox(height: 15),
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'Куда?',
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-              prefixIcon: const Icon(Icons.location_on_outlined),
-            ),
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: const Text(
-                'Найти водителя',
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-            ),
-          ),
-          const SizedBox(height: 40),
-          const Text(
-            'Доступные водители',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.person),
-                    ),
-                    title: Text('Водитель ${index + 1}'),
-                    subtitle: const Text('⭐ 4.8 • 5 км'),
-                    trailing: const Text('500 тг'),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class DriverHome extends StatelessWidget {
-  const DriverHome({super.key});
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentPage = 0;
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: 0);
+  }
+
+  void _goToPage(int page) {
+    _pageController.animateToPage(page, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    setState(() => _currentPage = page);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(title: const Text('RYDEX'), backgroundColor: Colors.blue),
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
         children: [
-          const Text(
-            'Активные заказы',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 15),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const CircleAvatar(
-                              child: Icon(Icons.person),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Пассажир ${index + 1}',
-                                    style: const TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  const Text('⭐ 4.9'),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              '${500 + index * 100} тг',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.green,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        const Row(
-                          children: [
-                            Icon(Icons.location_on, size: 18, color: Colors.green),
-                            SizedBox(width: 8),
-                            Expanded(child: Text('ул. Абая, 123')),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        const Row(
-                          children: [
-                            Icon(Icons.location_on, size: 18, color: Colors.red),
-                            SizedBox(width: 8),
-                            Expanded(child: Text('ул. Макатаева, 456')),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                ),
-                                child: const Text(
-                                  'Принять',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.grey,
-                                ),
-                                child: const Text(
-                                  'Отклонить',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+          _buildMapPage(),
+          _buildSearchingPage(),
+          _buildFoundPage(),
+          _buildTripPage(),
+          _buildFinishedPage(),
         ],
       ),
+      floatingActionButton: _currentPage == 0
+          ? FloatingActionButton(onPressed: () => _goToPage(1), backgroundColor: Colors.blue, child: const Icon(Icons.add))
+          : null,
     );
+  }
+
+  Widget _buildMapPage() {
+    return Column(
+      children: [
+        Expanded(child: Container(color: Colors.grey[200], child: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [const Icon(Icons.location_on, size: 100, color: Colors.blue), const SizedBox(height: 20), const Text('🚕 Order a Ride', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))])))),
+        Container(padding: const EdgeInsets.all(20), child: Column(children: [TextField(decoration: InputDecoration(hintText: '📍 Where from?', prefixIcon: const Icon(Icons.location_on), border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)))), const SizedBox(height: 15), TextField(decoration: InputDecoration(hintText: '🏁 Where to?', prefixIcon: const Icon(Icons.location_on_outlined), border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)))), const SizedBox(height: 20), SizedBox(width: double.infinity, height: 50, child: ElevatedButton(onPressed: () => _goToPage(1), style: ElevatedButton.styleFrom(backgroundColor: Colors.blue), child: const Text('✅ Confirm', style: TextStyle(color: Colors.white, fontSize: 16))))])),
+      ],
+    );
+  }
+
+  Widget _buildSearchingPage() => Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [const CircularProgressIndicator(color: Colors.blue), const SizedBox(height: 30), const Text('🔍 Looking for driver...', style: TextStyle(fontSize: 18)), const SizedBox(height: 50), ElevatedButton(onPressed: () => _goToPage(2), style: ElevatedButton.styleFrom(backgroundColor: Colors.green), child: const Text('✅ Driver Found (Demo)', style: TextStyle(color: Colors.white)))]));
+
+  Widget _buildFoundPage() => Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [const CircleAvatar(radius: 50, child: Icon(Icons.person, size: 50)), const SizedBox(height: 20), const Text('John Driver', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)), const SizedBox(height: 10), const Text('⭐ 4.8 • Toyota Camry', style: TextStyle(fontSize: 16)), const SizedBox(height: 30), const Text('🎉 Driver Found!', style: TextStyle(fontSize: 18, color: Colors.green)), const SizedBox(height: 50), ElevatedButton(onPressed: () => _goToPage(3), style: ElevatedButton.styleFrom(backgroundColor: Colors.blue), child: const Text('🚗 Trip Started', style: TextStyle(color: Colors.white)))]));
+
+  Widget _buildTripPage() => Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [const Icon(Icons.directions_car, size: 80, color: Colors.blue), const SizedBox(height: 20), const Text('🚗 Trip in Progress', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)), const SizedBox(height: 30), const Text('Duration: 12 min', style: TextStyle(fontSize: 16)), const SizedBox(height: 50), ElevatedButton(onPressed: () => _goToPage(4), style: ElevatedButton.styleFrom(backgroundColor: Colors.green), child: const Text('✅ Trip Finished', style: TextStyle(color: Colors.white)))]));
+
+  Widget _buildFinishedPage() => Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [const Icon(Icons.check_circle, size: 80, color: Colors.green), const SizedBox(height: 20), const Text('✅ Trip Complete', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)), const SizedBox(height: 20), const Text('💵 \$12.50', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.green)), const SizedBox(height: 30), const Text('Rate the driver:', style: TextStyle(fontSize: 16)), const SizedBox(height: 15), Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(5, (i) => GestureDetector(onTap: () {}, child: const Icon(Icons.star, size: 40, color: Colors.amber)))), const SizedBox(height: 50), ElevatedButton(onPressed: () => _goToPage(0), style: ElevatedButton.styleFrom(backgroundColor: Colors.blue), child: const Text('New Order', style: TextStyle(color: Colors.white)))]));
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }
